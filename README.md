@@ -17,7 +17,9 @@ Project N(ew m)enu is a garry's mod lua code that replaces standard html based m
   1.2. If it also fails, rename original menu folder (if you have one) into "menu"
 
 ## What's new?
-Fully reworked menu. Really. Including start game, server connect, and addons menus.
+* Fully reworked menu. Really. Including start game, server connect, and addons menus.
+* New loading screen.
+* **Probably** better perfomance
 
 ## Why?
 I was tired of original garry's mod menu, so, I made my own.
@@ -26,3 +28,4 @@ I was tired of original garry's mod menu, so, I made my own.
 * Bring back dupes and saves menu buttons
 * Bring back addon collections
 * Bring back image backgrounds
+* Bring back server custom html loading screens
