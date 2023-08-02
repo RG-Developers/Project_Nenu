@@ -13,8 +13,8 @@ Project N(ew m)enu is a garry's mod lua code that replaces standard html based m
 
 ## How to uninstall?
 1. Just verify garry's mod contents in steam  
-  1.1. If it fails, delete "menu" folder and try again.    
-    1.1.1. If it also fails, rename original menu folder (if you have one) into "menu"
+  1.1. If it fails, delete "menu" folder and try again.  
+  1.2. If it also fails, rename original menu folder (if you have one) into "menu"
 
 ## What's new?
 Fully reworked menu. Really. Including start game, server connect, and addons menus.
