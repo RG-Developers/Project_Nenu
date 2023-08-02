@@ -4,11 +4,11 @@ Project N(ew m)enu is a garry's mod lua code that replaces standard html based m
 ## How to install/update?
 * Download archive
 * Locate garry's mod local files directory
- * For steam: Library -> Garry's Mod -> Browse local files
+ ** For steam: Library -> Garry's Mod -> Browse local files
 * Go to "garrysmod" folder
 * Go to "lua" folder
 * Delete "menu" folder contents
- * Even though I say "delete", i recommend you to just rename original folder into something like "menu-old". That way, if steam does not find any errors in files while uninstalling, you can restore it back manually
+ ** Even though I say "delete", i recommend you to just rename original folder into something like "menu-old". That way, if steam does not find any errors in files while uninstalling, you can restore it back manually
 * Place archive contents in "menu" folder
 
 ## How to uninstall?
