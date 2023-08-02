@@ -5,7 +5,7 @@ local logfilename = "lua.txt"
 
 if not file.Exists("project_nenu/logs/"..logfilename, "DATA") then
 	file.CreateDir("project_nenu/logs")
-	file.Write("project_nenu/logs/"..logfilename, "RG Menu Lua error log file\n\n")
+	file.Write("project_nenu/logs/"..logfilename, "Project Nenu Lua error log file\n\n")
 end
 
 local function createError(error)

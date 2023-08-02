@@ -1,6 +1,7 @@
 print("+------------------+")
-print("|    RGDEV MENU    |")
+print("|   PROJECT NENU   |")
 print("|      v 1.0       |")
+print("|     BY RG DEV    |")
 print("+------------------+")
 
 animationSpeed = 1
