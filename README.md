@@ -20,6 +20,7 @@ Project N(ew m)enu is a garry's mod lua code that replaces standard html based m
 * Fully reworked menu. Really. Including start game, server connect, and addons menus.
 * New loading screen.
 * **Probably** better perfomance
+* Lua error log file (located in garrysmod/data/project_nenu/logs/lua.txt)
 
 ## Why?
 I was tired of original garry's mod menu, so, I made my own.
