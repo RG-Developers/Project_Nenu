@@ -144,11 +144,11 @@ function PANEL:Init()
 
 	self.tglbtn = makeMenuButton(self.addoninfopnl, "Toggle addon", (self:GetWide() - 30) * 0.75 + 15, self:GetTall() - 125, (self:GetWide() - 40) * 0.25, 30)
 	function self.tglbtn:DoClick()
-		if not self:GetParent().oadnbtn then return end
-		if not IsValid(self:GetParent().oadnbtn) then return end
-		self:GetParent().oadnbtn.addon.enabled = not self:GetParent().oadnbtn.addon.enabled
-		steamworks.SetShouldMountAddon(self:GetParent().oadnbtn.addon.wsid, self:GetParent().oadnbtn.addon.enabled)
-		self:GetParent():SelectAddon(self:GetParent().oadnbtn)
+		if not self:GetParent():GetParent().oadnbtn then return end
+		if not IsValid(self:GetParent():GetParent().oadnbtn) then return end
+		self:GetParent():GetParent().oadnbtn.addon.enabled = not self:GetParent():GetParent().oadnbtn.addon.enabled
+		steamworks.SetShouldMountAddon(self:GetParent():GetParent().oadnbtn.addon.wsid, self:GetParent():GetParent().oadnbtn.addon.enabled)
+		self:GetParent():GetParent():SelectAddon(self:GetParent():GetParent().oadnbtn)
 	end
 	self.tglbtn:Dock(BOTTOM)
 
