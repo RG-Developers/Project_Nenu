@@ -226,6 +226,8 @@ end
 function PANEL:StartGame()
 	self.gamedata.shostname = "Local game"
 	GetLoadingPanel().startTime = SysTime()
+	GetLoadingPanel().gamedata = self.gamedata
+	GetLoadingPanel().gamedata.pt = SysTime()
 
 	hook.Run("StartGame")
 	
@@ -239,7 +241,7 @@ function PANEL:StartGame()
 	RunConsoleCommand("hostname", self.gamedata.hostname)
 	RunConsoleCommand("p2p_enabled", self.gamedata.p2p_enabled and 1 or 0)
 	RunConsoleCommand("p2p_friendsonly", self.gamedata.p2p_friendsonly and 1 or 0)
-	RunConsoleCommand("sv_lan", self.gamedata.lan )
+	RunConsoleCommand("sv_lan", self.gamedata.lan and 1 or 0)
 	RunConsoleCommand("maxplayers", self.gamedata.maxplayers)
 	RunConsoleCommand("map", self.gamedata.map)
 end
@@ -248,6 +250,8 @@ function PANEL:Connect(server)
 	self.gamedata.shostname = server.name
 	self.gamedata.map = server.map
 	GetLoadingPanel().startTime = SysTime()
+	GetLoadingPanel().gamedata = self.gamedata
+	GetLoadingPanel().gamedata.pt = SysTime()
 	
 	if not steamworks.ShouldMountAddon(server.gmwsid) then
 		if steamworks.IsSubscribed(server.gmwsid) then
