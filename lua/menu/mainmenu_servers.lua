@@ -182,11 +182,6 @@ function PANEL:Init()
 								serverHasPassword, lastTimePlayed, serverAddress,
 								serverGamemode, serverGamemodeWSID, serverIsAnonymous,
 								serverVersion, serverVection2, serverLocale, serverCategory)
-				-- 320	Cafe&PropHunt	Prop Hunt: X2Z	ph_warehouse_v2
-				-- 0	24	0
-				--false	0	179.4.0.102:27019
-				--prop_hunt	2176546751	true
-				--20230628	230630	cl	pvp
 				if not ServerList[serverGamemode] then ServerList[serverGamemode] = {} end
 				ServerList[serverGamemode][#ServerList[serverGamemode]+1] = {ping = serverPing,
 											 name = serverName, nicegmname = serverGMName, map = serverMap,
@@ -197,7 +192,7 @@ function PANEL:Init()
 											 version = serverVersion, locale = serverLocale,
 											 category = serverCategory,
 											 address = serverAddress}
-
+				if not self or not self.serverlist then return end
 				if self.serverlist.filters[1] and not serverHasPassword then return end
 				if self.serverlist.filters[2] and serverHasPassword then return end
 				if self.serverlist.filters[3] and serverPlayers - serverBotPlayers <= 0 then return end

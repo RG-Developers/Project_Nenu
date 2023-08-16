@@ -33,9 +33,9 @@ function PANEL:DrawBackground()
 		self.ogamedata = table.Copy(self.gamedata)
 	end
 
-	local loadpercent = self.stage / (12 + (self.downloading and self.d_done or 0) + (self.server and 1 or 0))
+	local loadpercent = self.stage / 12
 	if self.downloading then
-		loadpercent = loadpercent + (self.d_done / (self.d_need*14))
+		loadpercent = self.stage + (self.d_done / self.d_need) / 14
 	end
 	loadpercent = math.min(loadpercent, 1)
 	surface.SetDrawColor(Color(255, 255, 255, 255))
