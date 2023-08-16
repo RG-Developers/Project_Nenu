@@ -31,5 +31,4 @@ I was tired of original garry's mod menu, so, I made my own.
 * Bring back addon collections
 * Bring back image backgrounds
 * Bring back server custom html loading screens
-* Fix loading progressbar
 * Fix server and start game menus
