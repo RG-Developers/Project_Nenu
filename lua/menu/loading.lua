@@ -91,9 +91,9 @@ function PANEL:Paint(w, h)
 		self.stage = 0
 		self.downloading = false
 	end
-	if not table.HasValue(self.lstrings, string.gsub(GetLoadStatus(), '^%s*(.-)%s*$', '%1')) then
-		self.lstrings[#self.lstrings+1] = string.gsub(GetLoadStatus(), '^%s*(.-)%s*$', '%1')
-		log("load", string.gsub(GetLoadStatus(), '^%s*(.-)%s*$', '%1'))
+	if not table.HasValue(self.lstrings, string.gsub(GetLoadStatus() or "", '^%s*(.-)%s*$', '%1')) then
+		self.lstrings[#self.lstrings+1] = string.gsub(GetLoadStatus() or "", '^%s*(.-)%s*$', '%1')
+		log("load", string.gsub(GetLoadStatus() or "", '^%s*(.-)%s*$', '%1'))
 		if GetLoadStatus():find("Extracting") or GetLoadStatus():find("Downloading") or GetLoadStatus():find("Loading") then 
 			self.downloading = true
 			self.server = true

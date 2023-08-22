@@ -249,7 +249,7 @@ function PANEL:Init()
 			local name = string.lower(string.gsub(m, "%.bsp$", ""))
 			local prefix = string.match(name, "^(.-_)")
 			local Ignore = IgnoreMaps[name] or IgnoreMaps[prefix]
-
+			if Ignore then continue end
 				local btn = makeMenuButton(self.mapslist, name, 0, 0, 128, 128)
 				btn.map = m
 				self.mapslist:AddItem(btn)
