@@ -97,6 +97,7 @@ local function reloadmenu()
 	if pnlConnectMenu then pnlConnectMenu = nil end
 	if pnlAddonsMenu then pnlAddonsMenu = nil end
 	if pnlMainMenu then pnlMainMenu:Remove() pnlMainMenu = nil end
+	if GetLoadingPanel() then GetLoadingPanel():Remove() end
 	animationSpeed = nil
 	makeMenuButton = nil
 	makePopup = nil

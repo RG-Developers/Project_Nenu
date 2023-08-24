@@ -6,17 +6,17 @@ local function createPopup(text, update, draw, w, h, deltime, ...)
 		local d = 1 - math.pow(1 - x, 3)
 		return (from * (1-d)) + (to * d)
 	end
-	local popupframe = vgui.Create("DFrame")
-	popupframe:SetTitle(" ")
-	popupframe:ShowCloseButton(false)
+	local popupframe = vgui.Create("Panel")
+	--popupframe:SetTitle(" ")
+	--popupframe:ShowCloseButton(false)
 	popupframe:SetZPos(32767)
-	popupframe:SetPos(-w-10, 0)
+	popupframe:SetPos(-w+1, 0)
 	popupframe:SetSize(w, h)
-	popupframe:SetDraggable(false)
-	popupframe:MakePopup()
-	popupframe:SetMouseInputEnabled(false)
-	popupframe:SetKeyboardInputEnabled(false)
-	popupframe:SetPaintedManually(true)
+	--popupframe:SetDraggable(false)
+	--popupframe:MakePopup()
+	--popupframe:SetMouseInputEnabled(false)
+	--popupframe:SetKeyboardInputEnabled(false)
+	--popupframe:SetPaintedManually(true)
 	popupframe.deltime = deltime
 	popupframe.id = #Popups + 1
 	popupframe.text = text
@@ -27,15 +27,24 @@ local function createPopup(text, update, draw, w, h, deltime, ...)
 	end)
 	_mt:Start(0.5*animationSpeed)
 	popupframe.anim = _mt
+	function popupframe:IsVisible()
+		return true
+	end
+	function popupframe:Think()
+		if self.anim and self.anim:Active() then
+			self.anim:Run()
+		end
+	end
+	function popupframe:PerformLayout()
+	end
 	function popupframe:Paint(w, h)
 		update()
-		if self.anim and self.anim:Active() then self.anim:Run() end
 		draw(self, w, h)
 		if self.deltime < SysTime() and not self.hidden then
 			local from_x = popupframe:GetX()
 			self.hidden = true
 			local _mt = Derma_Anim("PopupHideAnim", self, function(pnl, anim, delta, data)
-				pnl:SetPos(easeOutCubic(delta, from_x, -w-10), pnl:GetY())
+				pnl:SetPos(easeOutCubic(delta, from_x, -w+1), pnl:GetY())
 			end)
 			_mt:Start(0.5*animationSpeed)
 			popupframe.anim = _mt
@@ -76,6 +85,7 @@ hook.Add("DrawOverlay", "DrawPopups", function()
 			v:SetPos(v:GetX(), lastY)
 		end
 		lastY = lastY + 5 + v:GetTall()
+		v:PaintAt(v:GetPos())
 		v:PaintManual()
 	end
 end)

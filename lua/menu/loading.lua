@@ -9,7 +9,7 @@ local PANEL = {}
 function PANEL:Init()
 	self:SetSize(ScrW(), ScrH())
 	self.startTime = SysTime()
-	self.gamedata = {pt=-2}
+	self.gamedata = {pt=-1}
 	self.ogamedata = {pt=-1}
 	self.lstrings = {}
 	self.stage = 0
@@ -85,6 +85,7 @@ function ReverseTable(t)
 end
 
 function PANEL:Paint(w, h)
+	--self.gamedata = pnlMainMenu.gamedata
 	surface.SetFont("Default")
 	if GetLoadStatus() == "" then
 		self.lstrings = {}
@@ -107,7 +108,7 @@ function PANEL:Paint(w, h)
 	self:DrawBackground()
 end
 
-local PanelType_Loading = vgui.RegisterTable( PANEL, "EditablePanel" )
+local PanelType_Loading = vgui.RegisterTable(PANEL, "EditablePanel")
 local pnlLoading = nil
 
 function GetLoadPanel()
