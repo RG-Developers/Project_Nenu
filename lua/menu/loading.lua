@@ -64,8 +64,12 @@ function PANEL:DrawBackground()
 		end
 	end
 
-	local text = pnlMainMenu.gamedata.shostname .. ", " .. gamemode .. ", " .. string.lower(string.gsub(self.gamedata.map, "%.bsp$", ""))
+	local text = pnlMainMenu.gamedata.shostname
 	draw.DrawText(text, "DermaLarge", 153, 15, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+	local text = "Playing "..gamemode
+	draw.DrawText(text, "DermaMedium", 153, 60, Color(255, 255, 255), TEXT_ALIGN_LEFT)
+	local text = "On "..string.lower(string.gsub(self.gamedata.map, "%.bsp$", ""))
+	draw.DrawText(text, "DermaMedium", 153, 90, Color(255, 255, 255), TEXT_ALIGN_LEFT)
 end
 
 local mapthumbs = file.Find("maps/thumb/*", "GAME")

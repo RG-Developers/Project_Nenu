@@ -291,6 +291,7 @@ function PANEL:Init()
 					local width, height = surface.GetTextSize(self:GetButtonText())
 					draw.DrawText(self:GetButtonText(), self:GetFont() or "Default", w / 2 - width / 2, h / 2 - height / 2, self:GetTextColor(), TEXT_ALIGN_CENTER)
 				end
+				btn.nhcm = true
 		end
 	end
 

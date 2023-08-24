@@ -66,7 +66,7 @@ local function makeMenuButton(parent, text, x, y, w, h)
 		end
 		self.drawcolor = self.drawcolor or self:GetColor()
 		local oa = self.drawcolor.a
-		if IsInGame() then self.drawcolor.a = math.Clamp(self.drawcolor.a + 50, 0, 255) end
+		if IsInGame() and not self.nhcm then self.drawcolor.a = math.Clamp(self.drawcolor.a + 255, 0, 255) end
 		if self.pvisible then
 			surface.SetDrawColor(self.drawcolor or self:GetColor())
 			self:DrawBackground(w, h)
@@ -75,7 +75,7 @@ local function makeMenuButton(parent, text, x, y, w, h)
 			surface.SetDrawColor(self.drawcolor or self:GetColor())
 			self:DrawAfter(w, h)
 		end
-		if IsInGame() then self.drawcolor.a = oa end
+		if IsInGame() and not self.nhcm then self.drawcolor.a = oa end
 	end
 	btn:SetSize(w, h)
 	btn:SetPos(x, y)

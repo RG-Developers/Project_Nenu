@@ -106,11 +106,17 @@ local function reloadmenu()
 	table.shallow_copy = nil
 	GetFavServers = nil
 	SaveFavServers = nil
-	--log = nil
+	log = nil
 
 	init_menu()
 end
 
 concommand.Add("reload_menu", reloadmenu)
+
+surface.CreateFont("DermaMedium", {
+	font = "Roboto",
+	size = 24,
+	weight = 500
+})
 
 init_menu()
