@@ -85,7 +85,6 @@ function ReverseTable(t)
 end
 
 function PANEL:Paint(w, h)
-	--self.gamedata = pnlMainMenu.gamedata
 	surface.SetFont("Default")
 	if GetLoadStatus() == "" then
 		self.lstrings = {}

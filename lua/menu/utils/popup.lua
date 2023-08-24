@@ -7,16 +7,10 @@ local function createPopup(text, update, draw, w, h, deltime, ...)
 		return (from * (1-d)) + (to * d)
 	end
 	local popupframe = vgui.Create("Panel")
-	--popupframe:SetTitle(" ")
-	--popupframe:ShowCloseButton(false)
 	popupframe:SetZPos(32767)
-	popupframe:SetPos(-w+1, 0)
+	popupframe:SetPos(-w-10, 0)
 	popupframe:SetSize(w, h)
-	--popupframe:SetDraggable(false)
-	--popupframe:MakePopup()
-	--popupframe:SetMouseInputEnabled(false)
-	--popupframe:SetKeyboardInputEnabled(false)
-	--popupframe:SetPaintedManually(true)
+	popupframe:SetPaintedManually(true)
 	popupframe.deltime = deltime
 	popupframe.id = #Popups + 1
 	popupframe.text = text
@@ -44,7 +38,7 @@ local function createPopup(text, update, draw, w, h, deltime, ...)
 			local from_x = popupframe:GetX()
 			self.hidden = true
 			local _mt = Derma_Anim("PopupHideAnim", self, function(pnl, anim, delta, data)
-				pnl:SetPos(easeOutCubic(delta, from_x, -w+1), pnl:GetY())
+				pnl:SetPos(easeOutCubic(delta, from_x, -w-10), pnl:GetY())
 			end)
 			_mt:Start(0.5*animationSpeed)
 			popupframe.anim = _mt
