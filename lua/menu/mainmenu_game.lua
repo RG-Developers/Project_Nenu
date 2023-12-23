@@ -106,11 +106,12 @@ function PANEL:Init()
 		end
 		local control = vgui.Create("DNumberWang", panel)
 		function control:OnValueChanged(s)
-			RunConsoleCommand("maxplayers", tostring(s))
+			self:GetParent():GetParent():GetParent():GetParent():GetParent().gamedata.maxplayers = s
 		end
 		function control:Think()
 			if self:GetValue() < self:GetMax() and self:GetValue() > self:GetMin() then return end
 			self:SetValue(math.max(self:GetMin(), math.min(self:GetMax(), self:GetValue())))
+			self:GetParent():GetParent():GetParent():GetParent():GetParent().gamedata.maxplayers = self:GetValue()
 		end
 		control:SetValue(1)
 		control:SetMin(1)
@@ -258,7 +259,12 @@ function PANEL:Init()
 					self.omapbtn = btn
 					btn:SetColor(Color(150, 150, 150, 40))
 					self.pickedmap = btn.map
-					self.maptitlelabel:SetText(btn:GetButtonText())
+					local gm
+					for _,g in pairs(engine.GetGamemodes()) do
+						if g.name == engine.ActiveGamemode() then gm = g break end
+					end
+					if not gm then gm = {title = "ERR"} end
+					self.maptitlelabel:SetText(gm.title .. ": " .. btn:GetButtonText())
 				end
 				function btn:DoClick()
 					self:GetParent():GetParent():GetParent():GetParent():PickMap(btn)

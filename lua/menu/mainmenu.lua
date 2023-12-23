@@ -11,6 +11,8 @@ local PANEL = {}
 
 function PANEL:Init()
 	log("debug", "Main panel initialisation.")
+	RunConsoleCommand("stopsound")
+	self.allow_music = false
 	self:Dock(FILL)
 	self:SetKeyboardInputEnabled(true)
 	self:SetMouseInputEnabled(true)
@@ -67,8 +69,30 @@ function PANEL:Init()
 
 	log("debug", "Menu init done.")
 	self:StartShowAnimation(function() end)
+
+	timer.Simple(.02, function() self.allow_music = true end)
 	--pnlConnectMenu:UpdateServers()
 end
+
+function PANEL:StartMenuMusic()
+	local function SoundDuration(snd)
+		return ({["title2.ogg"] = 1*60+58, ["title3.ogg"] = 3*60+52})[snd]
+	end
+	self.playing_music = true
+	local fs, _ = file.Find("sound/nenu/menu/*", "GAME")
+	local s = fs[math.random(1, #fs)]
+	surface.PlaySound("nenu/menu/"..s)
+	timer.Simple(SoundDuration(s)+15, function()
+		self.playing_music = false
+		if not IsInGame() then
+			self:StartMenuMusic()
+		end
+	end)
+end
+
+local bg_mat = nil
+local bg_st = SysTime()
+local bg_alpha = 255
 
 function PANEL:DrawBackground()
 	local a = 255
@@ -78,6 +102,30 @@ function PANEL:DrawBackground()
 	surface.SetDrawColor(Color(0, 0, 0, a))
 	surface.DrawRect(0, 0, ScrW(), ScrH())
 	surface.SetDrawColor(Color(0, 0, 0, 255))
+	if not IsInGame() then
+		if not bg_mat then
+			local fs, _ = file.Find("gamemodes/"..engine.ActiveGamemode().."/backgrounds/*", "GAME")
+			local ps = "gamemodes/"..engine.ActiveGamemode().."/backgrounds/"
+			if #fs == 0 then
+				fs, _ = file.Find("backgrounds/*", "GAME")
+				ps = "backgrounds/"
+			end
+			local obgm = bg_mat
+			while bg_mat == obgm do
+				bg_mat = Material(ps..fs[math.random(1, #fs)])
+			end
+			bg_st = SysTime()
+		end
+		local off = 100
+		surface.SetDrawColor(Color(255, 255, 255, bg_alpha))
+		surface.SetMaterial(bg_mat)
+		sh = ScrH() + off
+		sw = (ScrH() / bg_mat:GetTexture("$basetexture"):Height()) * bg_mat:GetTexture("$basetexture"):Width() + off
+		surface.DrawTexturedRect(-(SysTime() - bg_st)*off/10, -off/2, sw, sh)
+		if -(SysTime() - bg_st)*off/10 < -50 then
+			bg_mat = nil
+		end
+	end
 	for _,particle in pairs(self.Particles) do
 		particle:draw()
 		particle:update()
@@ -94,6 +142,7 @@ function PANEL:StartHideAnimation(callback)
 	local _mt = Derma_Anim("MainMenuHideAnim", self.base, function(pnl, anim, delta, data)
 		pnl:SetPos(easeOutCubic(delta, from_x, -pnl:GetWide()-10), pnl:GetY())
 		pnl:GetParent().gmpanelx = easeOutCubic(delta, gm_from_x, ScrW())
+		bg_alpha = easeOutCubic(delta, 255, 25)
 	end)
 	function self:Think()
 		if _mt:Active() then
@@ -117,6 +166,7 @@ function PANEL:StartShowAnimation(callback)
 	local _mt = Derma_Anim("MainMenuShowAnim", self.base, function(pnl, anim, delta, data)
 		pnl:SetPos(easeOutCubic(delta, from_x, 10), pnl:GetY())
 		pnl:GetParent().gmpanelx = easeOutCubic(delta, gm_from_x, 0)
+		bg_alpha = easeOutCubic(delta, 25, 255)
 	end)
 	function self:Think()
 		if _mt:Active() then
@@ -191,6 +241,9 @@ end
 local rgd_logo = Material("nenu/rgd_logo.png")
 function PANEL:Paint(w, h)
 	self:DrawBackground()
+
+	if not IsInGame() and not self.playing_music and self.allow_music then self:StartMenuMusic() end
+
 	if self.gmname ~= engine.ActiveGamemode() then
 		self.gmname = engine.ActiveGamemode() or "base"
 		local mat = "gamemodes/"..self.gmname.."/logo.png"
@@ -240,8 +293,8 @@ function PANEL:StartGame()
 	hook.Run("StartGame")
 	RunConsoleCommand("progress_enable")
 	RunConsoleCommand("disconnect")
-	RunConsoleCommand("maxplayers", self.gamedata.maxplayers)
-	if self.gamedata.maxplayers > 1 then
+	RunConsoleCommand("stopsound")
+	if tonumber(self.gamedata.maxplayers) > 1 then
 		RunConsoleCommand("sv_cheats", "0")
 		RunConsoleCommand("commentary", "0")
 	end
@@ -249,7 +302,7 @@ function PANEL:StartGame()
 	RunConsoleCommand("p2p_enabled", self.gamedata.p2p_enabled and 1 or 0)
 	RunConsoleCommand("p2p_friendsonly", self.gamedata.p2p_friendsonly and 1 or 0)
 	RunConsoleCommand("sv_lan", self.gamedata.lan and 1 or 0)
-	RunConsoleCommand("maxplayers", self.gamedata.maxplayers)
+	RunConsoleCommand("maxplayers", tostring(self.gamedata.maxplayers))
 	RunConsoleCommand("map", self.gamedata.map)
 end
 
@@ -277,6 +330,7 @@ function PANEL:Connect(server)
 	hook.Run("StartGame")
 	RunConsoleCommand("progress_enable")
 	RunConsoleCommand("disconnect")
+	RunConsoleCommand("stopsound")
 	RunConsoleCommand("password", password or "no_password")
 	JoinServer(server.address)
 end
