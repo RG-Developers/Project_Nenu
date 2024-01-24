@@ -1,14 +1,23 @@
-print("+------------------+")
-print("|   PROJECT NENU   |")
-print("|      v 1.0       |")
-print("|     BY RG DEV    |")
-print("+------------------+")
-
 local function init_menu()
+
 	animationSpeed = 1
 
 	makeMenuButton = include("./menu/utils/button.lua")
 	makePopup = include("./menu/utils/popup.lua")
+
+	concommand.Add("__transfer_to_menu_please_god_dont_use_this_command_i_beg_you", function(_, cmd, args)
+		if args[1] == "runhook" then
+			hook.Run(args[2], unpack(args, 3))
+		end
+	end)
+
+	if not _print then
+		_print = print
+	end
+	function print(...)
+		hook.Run("Print", "menu", ...)
+		_print(...)
+	end
 
 	function log(f, str)
 		if not file.Exists("project_nenu/logs/"..f..".txt", "DATA") then
@@ -89,6 +98,12 @@ local function init_menu()
 	include("./menu/loading.lua")
 	include("./menu/mainmenu.lua")
 	include("./menu/workshop.lua")
+
+	print("+------------------+")
+	print("|   PROJECT NENU   |")
+	print("|      v 1.0       |")
+	print("|     BY RG DEV    |")
+	print("+------------------+")
 end
 
 local function reloadmenu()

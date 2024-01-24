@@ -71,7 +71,35 @@ function PANEL:Init()
 	self:StartShowAnimation(function() end)
 
 	timer.Simple(.02, function() self.allow_music = true end)
-	--pnlConnectMenu:UpdateServers()
+	
+	local splashes = {
+		"oh hi!", -- was used just as a test
+		"Welcome to garry's mod", -- because why not?
+		"I really wish there was a Mod\nGarry:", -- from meme
+		"Also try: S&box", -- also try sbox
+		"Also try: "..(table.Random(engine.GetGamemodes()).title), -- also try random gamemode you have installed
+		"85.0KB!", -- size of Nenu last time i checked
+		"Va- a va- va- a turnwheel!", -- HLVRAI throwback when Tommy couldn't say valve
+		"891289716501119016!", -- my discord user ID... idk why i put that here.
+		"explode.", -- explode.
+		":eye:", -- 👁️
+	}
+
+	local splash = splashes[math.random(#splashes)]
+
+	self.log = {}
+
+	for _,i in pairs(string.Explode("\n", splash)) do self.log[#self.log+1] = i end
+
+	hook.Add("Print", "MenuLogGeneration", function(realm, ...)
+		local str = ""
+		str = str.."["..realm.."] "
+		for _,i in pairs({...}) do
+			str = str..tostring(i).."\t"
+		end
+		str = str:match( "^%s*(.-)%s*$" )
+		self.log[#self.log+1] = str
+	end)
 end
 
 function PANEL:StartMenuMusic()
@@ -130,6 +158,27 @@ function PANEL:DrawBackground()
 		particle:draw()
 		particle:update()
 	end
+	local msl = 0
+	local console_size = 15
+	local fheight = 0
+	surface.SetFont("Default")
+	for i=#self.log, math.max(1, #self.log-console_size), -1 do
+		local width, height = surface.GetTextSize(self.log[i])
+		fheight = height
+		msl = math.max(width, msl)
+	end
+
+	draw.RoundedBox(10,
+		ScrW()-msl-30, 10,
+		msl+20, (fheight+10)*(#self.log-math.max(1, #self.log-console_size)+1)+10, Color(0, 0, 0, 127))
+
+	local offset = math.max(1, #self.log-console_size)
+	for i=#self.log, offset, -1 do
+		local pos = #self.log - i
+		surface.SetFont("Default")
+		local width, height = surface.GetTextSize(self.log[offset+pos])
+		draw.DrawText(self.log[offset+pos], "Default", ScrW()-msl-20, 20+pos*(fheight+10), Color(255, 255, 255), TEXT_ALIGN_LEFT)
+	end
 end
 
 function PANEL:StartHideAnimation(callback)
@@ -138,10 +187,12 @@ function PANEL:StartHideAnimation(callback)
 		return (from * (1-d)) + (to * d)
 	end
 	local from_x = self.base:GetX()
-	local gm_from_x = self.gmpanelx
 	local _mt = Derma_Anim("MainMenuHideAnim", self.base, function(pnl, anim, delta, data)
-		pnl:SetPos(easeOutCubic(delta, from_x, -pnl:GetWide()-10), pnl:GetY())
-		pnl:GetParent().gmpanelx = easeOutCubic(delta, gm_from_x, ScrW())
+		local mw = 0
+		if self.material then
+			mw = self.material:GetTexture("$basetexture"):Width()
+		end
+		pnl:SetPos(easeOutCubic(delta, from_x, -pnl:GetWide()-20-mw), pnl:GetY())
 		bg_alpha = easeOutCubic(delta, 255, 25)
 	end)
 	function self:Think()
@@ -162,10 +213,8 @@ function PANEL:StartShowAnimation(callback)
 		return (from * (1-d)) + (to * d)
 	end
 	local from_x = self.base:GetX()
-	local gm_from_x = self.gmpanelx
 	local _mt = Derma_Anim("MainMenuShowAnim", self.base, function(pnl, anim, delta, data)
 		pnl:SetPos(easeOutCubic(delta, from_x, 10), pnl:GetY())
-		pnl:GetParent().gmpanelx = easeOutCubic(delta, gm_from_x, 0)
 		bg_alpha = easeOutCubic(delta, 25, 255)
 	end)
 	function self:Think()
@@ -254,12 +303,12 @@ function PANEL:Paint(w, h)
 
 	surface.SetDrawColor(Color(255, 255, 255))
 	surface.SetMaterial(rgd_logo)
-	surface.DrawTexturedRect(self.gmpanelx + w - rgd_logo:GetTexture("$basetexture"):Width() - 10, h-10-rgd_logo:GetTexture("$basetexture"):Height(), rgd_logo:GetTexture("$basetexture"):Width(), rgd_logo:GetTexture("$basetexture"):Height())
+	surface.DrawTexturedRect(10 + self.base:GetX() + self.base:GetWide() + 10, h-10-rgd_logo:GetTexture("$basetexture"):Height(), rgd_logo:GetTexture("$basetexture"):Width(), rgd_logo:GetTexture("$basetexture"):Height())
 
 	if not self.material then return end
 	surface.SetDrawColor(Color(255, 255, 255))
 	surface.SetMaterial(self.material)
-	surface.DrawTexturedRect(self.gmpanelx + w - self.material:GetTexture("$basetexture"):Width() - 10, 10, self.material:GetTexture("$basetexture"):Width(), self.material:GetTexture("$basetexture"):Height())
+	surface.DrawTexturedRect(10 + self.base:GetX() + self.base:GetWide() + 10, 10, self.material:GetTexture("$basetexture"):Width(), self.material:GetTexture("$basetexture"):Height())
 end
 
 log("debug", "Main menu panel register.")
