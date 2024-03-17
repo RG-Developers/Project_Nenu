@@ -212,7 +212,7 @@ function PANEL:Init()
 					if btn.cat == self.pickedcat then self:PickCategory(btn) end
 				end
 
-				local btn = makeMenuButton(self.serverlist, serverName, 0, 0, 0, 0)
+				local btn = makeMenuButton(self.serverlist.servers, serverName, 0, 0, 0, 0)
 				self.serverlist.servers:Add(btn)
 				btn:Dock(TOP)
 				btn:SetSize(btn:GetWide(), 30)
